@@ -1,0 +1,41 @@
+## Project Architecture
+
+
+postgres-to-snowflake-etl/
+│
+├── dags/
+│   └── orders_etl_dag.py       # Airflow workflow and scheduling
+│
+├── script/
+│   └── etl_pipeline.py         # ETL logic: extract, transform, load
+│
+├── .env                 # Database credentials (not committed)
+                
+
+
+### Data Pipeline Workflow
+
+PostgreSQL
+    │
+    ▼
+Incremental Data Extraction
+    │
+    ▼
+Data Cleaning & Transformation
+       (Python + Pandas)
+    │
+    ▼
+Load Data into Snowflake
+    │
+    ▼
+Snowflake Data Warehouse
+
+Apache Airflow → Schedules and orchestrates the ETL pipeline
+
+
+How it works:
+
+1. Extract: Retrieves new order records from PostgreSQL using an incremental loading condition.
+2. Transform: Uses Python and Pandas to clean and prepare the extracted data.
+3. Load: Loads the processed records into Snowflake for analytical use.
+4. Orchestrate: Apache Airflow schedules the pipeline and manages task execution and retries.
